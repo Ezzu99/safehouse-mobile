@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "safehouse-mobile",
-    "slug": "safehouse-mobile",
+    "name": "safehouse-frontend-mobile",
+    "slug": "safehouse-frontend-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
