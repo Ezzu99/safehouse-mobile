@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     },
     header: {
         color: "#8e24aa",
-        fontSize: "42px",
+        fontSize: "42",
         fontFamily: "Poppins-Medium",
     },
 });

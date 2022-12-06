@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./src/components/Login";
 import DashboardAdmin from "./src/components/DashboardAdmin";
 import DashboardNGO from "./src/components/DashboardNGO";
+import DashboardLister from "./src/components/DashboardLister";
 import * as Font from "expo-font";
 
 const ScreenStack = createNativeStackNavigator();
@@ -52,12 +53,17 @@ function App() {
                 <ScreenStack.Screen
                     name="DashboardAdmin"
                     component={DashboardAdmin}
-                    options={{ headerShown: false }}
+                    options={{ title: "Admin Panel", headerShown: false }}
                 />
                 <ScreenStack.Screen
                     name="DashboardNGO"
                     component={DashboardNGO}
-                    options={{ headerShown: false }}
+                    options={{ title: "NGO Panel", headerShown: false }}
+                />
+                <ScreenStack.Screen
+                    name="DashboardLister"
+                    component={DashboardLister}
+                    options={{ title: "Lister Panel", headerShown: false }}
                 />
             </ScreenStack.Navigator>
         </NavigationContainer>

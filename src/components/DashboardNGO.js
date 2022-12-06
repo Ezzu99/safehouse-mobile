@@ -285,7 +285,9 @@ const DashboardNGO = () => {
                                 <Flex
                                     fill
                                     justifyContent="center"
-                                    style={{ paddingHorizontal: 18 }}
+                                    style={{
+                                        padding: 18,
+                                    }}
                                 >
                                     <Stack spacing={18}>
                                         <TextInput
@@ -317,6 +319,7 @@ const DashboardNGO = () => {
                                             textContentType="password"
                                             variant="standard"
                                             color="#8e24aa"
+                                            secureTextEntry={true}
                                             onChangeText={setPassword}
                                             value={password}
                                         />
@@ -338,7 +341,7 @@ const DashboardNGO = () => {
                                         />
                                         <TextInput
                                             label="Address"
-                                            textContentType="addressCityAndState"
+                                            textContentType="fullStreetAddress"
                                             variant="standard"
                                             color="#8e24aa"
                                             onChangeText={setAddress}
@@ -396,7 +399,7 @@ const styles = StyleSheet.create({
     },
     header: {
         color: "#8e24aa",
-        fontSize: "42px",
+        fontSize: "42",
         fontFamily: "Poppins-Medium",
     },
 });

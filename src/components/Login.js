@@ -55,6 +55,8 @@ export default function Login({ navigation }) {
                 navigation.navigate("DashboardAdmin");
             } else if (res.data.role.toLowerCase() == "ngo") {
                 navigation.navigate("DashboardNGO");
+            } else if (res.data.role.toLowerCase() == "lister") {
+                navigation.navigate("DashboardLister");
             }
         } catch (e) {
             console.log(e);
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     },
     header: {
         color: "#8e24aa",
-        fontSize: "42px",
+        fontSize: "42",
         fontFamily: "Poppins-Medium",
     },
 });
