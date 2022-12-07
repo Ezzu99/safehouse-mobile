@@ -15,6 +15,7 @@ import DashboardAdmin from "./src/components/DashboardAdmin";
 import DashboardNGO from "./src/components/DashboardNGO";
 import DashboardLister from "./src/components/DashboardLister";
 import * as Font from "expo-font";
+import DashboardHomeless from "./src/components/DashboardHomeless";
 
 const ScreenStack = createNativeStackNavigator();
 
@@ -64,6 +65,12 @@ function App() {
                     name="DashboardLister"
                     component={DashboardLister}
                     options={{ title: "Lister Panel", headerShown: false }}
+                />
+
+                <ScreenStack.Screen
+                    name="DashboardHomeless"
+                    component={DashboardHomeless}
+                    options={{ title: "Homeless Panel", headerShown: false }}
                 />
             </ScreenStack.Navigator>
         </NavigationContainer>

@@ -19,8 +19,8 @@ import {
 import axios from "axios";
 
 let instance = axios.create({
-    baseURL: "http://192.168.18.246:3000/",
-    timeout: 6000,
+    baseURL: "http://192.168.43.45:3000/",
+    timeout: 10000,
     headers: {
         post: {
             "Content-Type": "application/json",
@@ -57,6 +57,8 @@ export default function Login({ navigation }) {
                 navigation.navigate("DashboardNGO");
             } else if (res.data.role.toLowerCase() == "lister") {
                 navigation.navigate("DashboardLister");
+            } else {
+                navigation.navigate("DashboardHomeless");
             }
         } catch (e) {
             console.log(e);

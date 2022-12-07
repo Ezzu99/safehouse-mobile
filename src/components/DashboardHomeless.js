@@ -10,6 +10,7 @@ import {
     HStack,
     Button,
     Switch,
+    TextInput,
 } from "@react-native-material/core";
 import { useEffect, useState } from "react";
 import {
@@ -26,16 +27,28 @@ import {
 import axios from "axios";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-const DashboardAdmin = () => {
-    const [orgs, setOrgs] = useState();
-    const [pending, setPending] = useState();
+const DashboardHomeless = () => {
+    const [workshops, setWorkshops] = useState();
+    const [jobs, setJobs] = useState();
+    const [showWorkshop, setShowWorkshop] = useState(true);
+    const [showJob, setShowJob] = useState(false);
+    const [showAddJob, setAddJob] = useState(false);
+    const [showAddWorkshop, setAddWorkshop] = useState(false);
+    const [course, setCourse] = useState("");
+    const [instructor, setInstructor] = useState("");
+    const [courseUrl, setCourseUrl] = useState("");
+    const [job, setJob] = useState("");
+    const [employer, setEmployer] = useState("");
+    const [jobUrl, setJobUrl] = useState("");
+    const [desc, setDesc] = useState("");
     const [revealed, setRevealed] = useState(false);
     const [token, setToken] = useState(AsyncStorage.getItem("token"));
-    const [showNGO, setShowNGO] = useState(true);
+    const [role, setRole] = useState("");
+    const [loading, setLoading] = useState(false);
 
     let instance = axios.create({
         baseURL: "http://192.168.43.45:3000",
-        timeout: 10000,
+        timeout: 6000,
         headers: {
             post: {
                 "Content-Type": "application/json",
@@ -44,61 +57,33 @@ const DashboardAdmin = () => {
         },
     });
 
-    const fetchNGOs = async () => {
+    const fetchWorkshops = async () => {
         try {
-            let res = await instance.get("/api/organizations");
-            setOrgs(res.data);
+            let res = await instance.get("/api/courses");
+
             console.log(res.data);
+            setWorkshops(res.data);
         } catch (e) {
             console.log(e);
         }
     };
 
-    const fetchRequests = async () => {
+    const fetchJobs = async () => {
         try {
-            let res = await instance.get("/api/requests/affiliations/pending");
-            setPending(res.data);
+            let res = await instance.get("/api/jobs");
+
             console.log(res.data);
+            setJobs(res.data);
         } catch (e) {
             console.log(e);
         }
-    };
-
-    const acceptRequest = async (id) => {
-        try {
-            let res = await instance.put(`/api/requests/affiliations/${id}`, {
-                markAs: "ACCEPTED",
-            });
-            console.log(res.data.username, res.data.ststus);
-
-            // res = await instance.delete(`/api/requests/affiliations/${id}`);
-            // console.log(res.data.username, "Request status changed!");
-        } catch (e) {
-            console.log(e);
-        }
-
-        fetchRequests();
-    };
-
-    const deleteNGOs = async (username) => {
-        try {
-            let res = await instance.delete(
-                `/api/requests/affiliations/${username}`
-            );
-            console.log(res.data.username, "Deleted!");
-        } catch (e) {
-            console.log(e);
-        }
-
-        fetchNGOs();
     };
 
     useEffect(() => {
         setToken(AsyncStorage.getItem("token"));
 
-        fetchNGOs();
-
-        fetchRequests();
+        fetchWorkshops();
+        fetchJobs();
     }, []);
 
     return (
@@ -140,47 +125,45 @@ const DashboardAdmin = () => {
                         backLayer={
                             <View
                                 style={{
-                                    height: 80,
+                                    height: 70,
                                     marginBottom: -10,
                                     padding: 12,
                                     backgroundColor: "#8e24aa",
                                 }}
                             >
-                                <Flex
-                                    center
-                                    fill
-                                    direction="row"
-                                    alignItems="center"
-                                    justifyContent="space-between"
-                                >
-                                    <Text
-                                        style={{
-                                            color: "#fff",
-                                            fontSize: "16px",
-                                        }}
+                                <Stack spacing={12}>
+                                    <HStack
+                                        direction="row"
+                                        alignItems="center"
+                                        justifyContent="space-between"
                                     >
-                                        Show NGOs
-                                    </Text>
-                                    <Switch
-                                        value={showNGO}
-                                        onValueChange={() => {
-                                            setShowNGO(!showNGO);
-                                            fetchNGOs();
-                                            fetchRequests();
-                                        }}
-                                    />
-                                </Flex>
+                                        <Text
+                                            style={{
+                                                color: "#fff",
+                                                fontSize: "16px",
+                                            }}
+                                        >
+                                            Show Workshops
+                                        </Text>
+                                        <Switch
+                                            value={showWorkshop}
+                                            onValueChange={() => {
+                                                setShowWorkshop(!showWorkshop);
+                                            }}
+                                        />
+                                    </HStack>
+                                </Stack>
                             </View>
                         }
                     >
                         <BackdropSubheader
-                            title={showNGO ? "NGOs" : "Affiliation Requests"}
+                            title={showWorkshop ? "Workshops" : "Jobs"}
                         />
-                        {showNGO && (
+                        {showWorkshop && (
                             <ScrollView>
                                 <Flex>
                                     <Stack>
-                                        {orgs?.map((org, index) => (
+                                        {workshops?.map((workshop, index) => (
                                             <Box
                                                 key={index}
                                                 style={{
@@ -219,44 +202,26 @@ const DashboardAdmin = () => {
                                                                 }}
                                                             >
                                                                 <Text>
-                                                                    {org.name}
-                                                                </Text>
-                                                                <Text>
-                                                                    {org.email}
+                                                                    {
+                                                                        workshop.name
+                                                                    }
                                                                 </Text>
                                                                 <Text>
                                                                     {
-                                                                        org.phoneNum
+                                                                        workshop.instructor
+                                                                    }
+                                                                </Text>
+                                                                <Text>
+                                                                    {
+                                                                        workshop.url
+                                                                    }
+                                                                </Text>
+                                                                <Text>
+                                                                    {
+                                                                        workshop.desc
                                                                     }
                                                                 </Text>
                                                             </Stack>
-                                                            <Box
-                                                                style={{
-                                                                    display:
-                                                                        "flex",
-                                                                    alignItems:
-                                                                        "center",
-                                                                    justifyContent:
-                                                                        "center",
-                                                                }}
-                                                            >
-                                                                <IconButton
-                                                                    icon={(
-                                                                        props
-                                                                    ) => (
-                                                                        <Icon
-                                                                            name="delete-outline"
-                                                                            {...props}
-                                                                        />
-                                                                    )}
-                                                                    onPress={() => {
-                                                                        deleteNGOs(
-                                                                            org.username
-                                                                        );
-                                                                        fetchNGOs();
-                                                                    }}
-                                                                />
-                                                            </Box>
                                                         </Flex>
                                                     </HStack>
                                                 </Flex>
@@ -266,11 +231,11 @@ const DashboardAdmin = () => {
                                 </Flex>
                             </ScrollView>
                         )}
-                        {!showNGO && (
+                        {!showWorkshop && (
                             <ScrollView>
                                 <Flex>
                                     <Stack>
-                                        {pending?.map((org, index) => (
+                                        {jobs?.map((jobx, index) => (
                                             <Box
                                                 key={index}
                                                 style={{
@@ -309,43 +274,20 @@ const DashboardAdmin = () => {
                                                                 }}
                                                             >
                                                                 <Text>
-                                                                    {org.name}
-                                                                </Text>
-                                                                <Text>
-                                                                    {org.email}
+                                                                    {jobx.name}
                                                                 </Text>
                                                                 <Text>
                                                                     {
-                                                                        org.phoneNum
+                                                                        jobx.employer
                                                                     }
                                                                 </Text>
+                                                                <Text>
+                                                                    {jobx.url}
+                                                                </Text>
+                                                                <Text>
+                                                                    {jobx.desc}
+                                                                </Text>
                                                             </Stack>
-                                                            <Box
-                                                                style={{
-                                                                    display:
-                                                                        "flex",
-                                                                    alignItems:
-                                                                        "center",
-                                                                    justifyContent:
-                                                                        "center",
-                                                                }}
-                                                            >
-                                                                <IconButton
-                                                                    icon={(
-                                                                        props
-                                                                    ) => (
-                                                                        <Icon
-                                                                            name="check"
-                                                                            {...props}
-                                                                        />
-                                                                    )}
-                                                                    onPress={() => {
-                                                                        acceptRequest(
-                                                                            org.id
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </Box>
                                                         </Flex>
                                                     </HStack>
                                                 </Flex>
@@ -373,4 +315,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DashboardAdmin;
+export default DashboardHomeless;

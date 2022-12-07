@@ -47,8 +47,8 @@ const DashboardLister = () => {
     const [loading, setLoading] = useState(false);
 
     let instance = axios.create({
-        baseURL: "http://192.168.18.246:3000",
-        timeout: 6000,
+        baseURL: "http://192.168.43.45:3000",
+        timeout: 10000,
         headers: {
             post: {
                 "Content-Type": "application/json",
